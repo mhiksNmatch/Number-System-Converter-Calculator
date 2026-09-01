@@ -68,7 +68,7 @@ export default function Page() {
               transition={{ duration: 0.2 }}
               className="bg-[#FCFAF2] p-8 md:p-10 rounded-2xl shadow-sm border border-[#D6D3C1] max-w-4xl mx-auto prose prose-neutral prose-headings:text-[#5A5A40] text-[#43413B]"
             >
-              <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <h3 className="text-xl font-bold mb-1 flex items-center gap-2">
                   <span className="bg-[#5A5A40] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
                   System Requirements</h3>
               <ul>
@@ -111,7 +111,7 @@ export default function Page() {
               </pre>
 
               <section>
-                <h3 className="text-xl font-bold mb-3 mt-6 flex items-center gap-2">
+                <h3 className="text-xl font-bold mt-6 flex items-center gap-2">
                   <span className="bg-[#5A5A40] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
                   Flowchart
                 </h3>
