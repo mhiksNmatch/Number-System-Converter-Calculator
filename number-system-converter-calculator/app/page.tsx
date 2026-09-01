@@ -68,7 +68,9 @@ export default function Page() {
               transition={{ duration: 0.2 }}
               className="bg-[#FCFAF2] p-8 md:p-10 rounded-2xl shadow-sm border border-[#D6D3C1] max-w-4xl mx-auto prose prose-neutral prose-headings:text-[#5A5A40] text-[#43413B]"
             >
-              <h2>System Requirements</h2>
+              <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                  <span className="bg-[#5A5A40] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+                  System Requirements</h3>
               <ul>
                 <li><strong>Environment:</strong> Modern Web Browser with JavaScript enabled.</li>
                 <li><strong>Input Handling:</strong> Supports dynamic addition of minimum 3 operands.</li>
@@ -77,7 +79,9 @@ export default function Page() {
                 <li><strong>Validation:</strong> Real-time regex-based input validation preventing invalid characters for the selected base.</li>
               </ul>
 
-              <h2>Algorithm / Pseudocode</h2>
+              <h3 className="text-xl font-bold mb-3 mt-6 flex items-center gap-2">
+                  <span className="bg-[#5A5A40] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+                  Algorithm / Pseudocode</h3>
               <pre className="bg-neutral-900 text-neutral-100 p-4 rounded-lg overflow-x-auto text-sm">
               {`1. Initialize application state:
                 - inputs = [{base: 2, value: ''}, {base: 8, value: ''}, {base: 10, value: ''}]
@@ -106,34 +110,11 @@ export default function Page() {
                   g. DISPLAY individual conversions and final results`}
               </pre>
 
-              <h2>Flowchart</h2>
-              <div className="bg-[#F2F1EB] p-4 rounded-lg border border-[#D6D3C1] my-4 text-center text-sm font-mono text-[#8E917A]">
-                (Render via Mermaid.js)
-                <br/>
-                <br/>
-                graph TD<br/>
-                A[Start] --&gt; B[Initialize 3 inputs]<br/>
-                B --&gt; C[User enters values and selects bases]<br/>
-                C --&gt; D[User selects arithmetic operation]<br/>
-                D --&gt; E{"{ Click Calculate? }"}<br/>
-                E -- Yes --&gt; F{"{ Validate Inputs }"}<br/>
-                F -- Invalid --&gt; G[Show Error] --&gt; C<br/>
-                F -- Valid --&gt; H[Convert each input to Decimal]<br/>
-                H --&gt; I[Display Individual Conversions]<br/>
-                I --&gt; J[Apply Arithmetic Operation]<br/>
-                J --&gt; K[Convert Result to all Bases]<br/>
-                K --&gt; L[Display Expression and Results]<br/>
-                L --&gt; M[End]
-              </div>
-
               <section>
-                <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
-                  <span className="bg-[#5A5A40] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
-                  System Architecture Flowchart
+                <h3 className="text-xl font-bold mb-3 mt-6 flex items-center gap-2">
+                  <span className="bg-[#5A5A40] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+                  Flowchart
                 </h3>
-                <p className="mb-4">
-                  Below is the visual logic flow of how the Number System Converter processes your inputs, executes the math, and saves to the database.
-                </p>
 
                 <Mermaid chart={`
                   graph TD
@@ -153,7 +134,10 @@ export default function Page() {
                 `} />
               </section>
 
-              <h2>Test Cases</h2>
+              <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                <span className="bg-[#5A5A40] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
+                Test Cases
+              </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse border border-[#D6D3C1]">
                   <thead className="bg-[#E8E6D8] text-[#5A5A40]">
