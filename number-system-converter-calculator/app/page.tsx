@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Mermaid from '@/components/Mermaid';
 import Calculator from '@/components/Calculator';
 import { CalculatorProvider } from '@/components/CalculatorContext';
 import { FileText, Calculator as CalcIcon } from 'lucide-react';
@@ -78,31 +79,31 @@ export default function Page() {
 
               <h2>Algorithm / Pseudocode</h2>
               <pre className="bg-neutral-900 text-neutral-100 p-4 rounded-lg overflow-x-auto text-sm">
-{`1. Initialize application state:
-   - inputs = [{base: 2, value: ''}, {base: 8, value: ''}, {base: 10, value: ''}]
-   - operation = '+'
-2. ON calculate_button_click:
-   a. FOREACH input in inputs:
-      IF value does not match regex for selected base:
-         SHOW validation error
-         RETURN
-   b. Initialize parsed_values = []
-   c. FOREACH input in inputs:
-      decimal_val = PARSE_INT(input.value, input.base)
-      ADD {original, base, decimal_val} TO parsed_values
-   d. total = parsed_values[0].decimal_val
-   e. FOR i = 1 TO parsed_values.length - 1:
-      current = parsed_values[i].decimal_val
-      IF operation == '+': total = total + current
-      IF operation == '-': total = total - current
-      IF operation == '*': total = total * current
-      IF operation == '/': total = total / current
-   f. Generate final results:
-      bin_res = TO_BASE(total, 2)
-      oct_res = TO_BASE(total, 8)
-      dec_res = TO_BASE(total, 10)
-      hex_res = TO_BASE(total, 16)
-   g. DISPLAY individual conversions and final results`}
+              {`1. Initialize application state:
+                - inputs = [{base: 2, value: ''}, {base: 8, value: ''}, {base: 10, value: ''}]
+                - operation = '+'
+                2. ON calculate_button_click:
+                  a. FOREACH input in inputs:
+                      IF value does not match regex for selected base:
+                        SHOW validation error
+                        RETURN
+                  b. Initialize parsed_values = []
+                  c. FOREACH input in inputs:
+                      decimal_val = PARSE_INT(input.value, input.base)
+                      ADD {original, base, decimal_val} TO parsed_values
+                  d. total = parsed_values[0].decimal_val
+                  e. FOR i = 1 TO parsed_values.length - 1:
+                      current = parsed_values[i].decimal_val
+                      IF operation == '+': total = total + current
+                      IF operation == '-': total = total - current
+                      IF operation == '*': total = total * current
+                      IF operation == '/': total = total / current
+                  f. Generate final results:
+                      bin_res = TO_BASE(total, 2)
+                      oct_res = TO_BASE(total, 8)
+                      dec_res = TO_BASE(total, 10)
+                      hex_res = TO_BASE(total, 16)
+                  g. DISPLAY individual conversions and final results`}
               </pre>
 
               <h2>Flowchart</h2>
@@ -124,6 +125,33 @@ export default function Page() {
                 K --&gt; L[Display Expression and Results]<br/>
                 L --&gt; M[End]
               </div>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                  <span className="bg-[#5A5A40] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
+                  System Architecture Flowchart
+                </h3>
+                <p className="mb-4">
+                  Below is the visual logic flow of how the Number System Converter processes your inputs, executes the math, and saves to the database.
+                </p>
+
+                <Mermaid chart={`
+                  graph TD
+                    A[User Enters N Numbers & Bases] --> B{Validate Inputs?}
+                    B -- Invalid --> C[Show Error Message]
+                    B -- Valid --> D[Convert all inputs to Base 10]
+                    D --> E[Apply Selected Arithmetic Operation]
+                    E --> F[Calculate Final Decimal Total]
+                    F --> G[Convert Total to Binary]
+                    F --> H[Convert Total to Octal]
+                    F --> I[Convert Total to Hexadecimal]
+                    G --> J[Display Results UI]
+                    H --> J
+                    I --> J
+                    F --> J
+                    J --> K[(Save to Supabase Database)]
+                `} />
+              </section>
 
               <h2>Test Cases</h2>
               <div className="overflow-x-auto">
