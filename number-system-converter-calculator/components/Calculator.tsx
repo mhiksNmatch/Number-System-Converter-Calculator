@@ -57,6 +57,17 @@ const OP_ICONS = {
   '/': <Divide className="w-5 h-5" />
 };
 
+const formatExpressionValue = (part: string) => {
+  const subs: Record<string, string> = {
+    '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄',
+    '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉'
+  };
+
+  return part.replace(/_(\d+)/g, (_match: string, p1: string) =>
+    p1.split('').map((c: string) => subs[c] ?? c).join('')
+  );
+};
+
 export default function Calculator() {
   const {
     inputs, setInputs,
@@ -150,7 +161,7 @@ export default function Calculator() {
     const newResult = {
       originalValues: parsedValues,
       finalValue: total,
-      expression: `${expr} = (${fromDecimal(total, 10)})_10`
+      expression: `${expr} = (${fromDecimal(total, 10)})`
     };
 
     setResults(newResult);
@@ -291,16 +302,10 @@ export default function Calculator() {
                 <div className="font-mono text-xl md:text-2xl text-[#43413B] tracking-wide overflow-x-auto whitespace-nowrap pb-2">
                   {results.expression.split('=').map((part: string, i: number) => (
                     i === 0 ? (
-                      <span key={i}>
-                        {part.replace(/_(\ d+)/g, (_match: string, p1: string) => {
-                          const subs: Record<string, string> = { '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉' };
-                          return p1.split('').map((c: string) => subs[c]).join('');
-                        })}
-                      </span>
+                      <span key={i}>{formatExpressionValue(part)}</span>
                     ) : (
                       <span key={i} className="font-bold text-[#5A5A40]">
-                        {' = '}{part.replace(/_(\d+)/g, '')}
-                        <span className="text-[12px] align-baseline font-normal text-[#8E917A]">10</span>
+                        {' = '}{part.trim()}
                       </span>
                     )
                   ))}
@@ -391,15 +396,10 @@ export default function Calculator() {
                 <div className="font-mono text-sm text-[#43413B] overflow-x-auto whitespace-nowrap scrollbar-hide">
                   {item.expression.split('=').map((part, i) => (
                     i === 0 ? (
-                      <span key={i}>
-                        {part.replace(/_(\d+)/g, (match, p1) => {
-                          const subs: Record<string, string> = { '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉' };
-                          return p1.split('').map((c: string) => subs[c]).join('');
-                        })}
-                      </span>
+                      <span key={i}>{formatExpressionValue(part)}</span>
                     ) : (
                       <span key={i} className="font-bold text-[#5A5A40]">
-                        {' = '}{part.replace(/_(\d+)/g, '')}
+                        {' = '}{part.trim()}
                       </span>
                     )
                   ))}
