@@ -8,16 +8,23 @@ export default function Page() {
   return (
     <CalculatorProvider>
       <div className="min-h-screen bg-[#F2F1EB] text-[#43413B] font-sans selection:bg-[#E8E6D8]">
-        <header className="bg-transparent border-b border-[#D6D3C1] py-6 sticky top-0 z-10">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <header className="sticky top-0 z-10 border-b border-[#D6D3C1]/90 bg-[#FCFAF2]/95 py-5 backdrop-blur-md">
+          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
             <div>
-              <h1 className="text-3xl font-serif font-bold text-[#5A5A40] tracking-tight">Number System Converter</h1>
-              <p className="text-[#8E917A] text-sm uppercase tracking-widest font-medium mt-1">Multi-base arithmetic calculator</p>
+              <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.24em] text-[#8E917A]">
+                <span className="h-2 w-2 rounded-full bg-[#5A5A40]" />
+                Calculation workspace
+              </div>
+              <h1 className="font-serif text-3xl font-bold tracking-tight text-[#5A5A40] sm:text-4xl">Number System Converter</h1>
+              <p className="mt-1 text-sm text-[#8E917A]">Multi-base arithmetic, conversion, and complement tools.</p>
+            </div>
+            <div className="hidden rounded-full border border-[#D6D3C1] bg-[#F2F1EB] px-4 py-2 text-xs font-semibold text-[#5A5A40] lg:block">
+              Binary · Octal · Decimal · Hexadecimal
             </div>
           </div>
         </header>
 
-        <main className="max-w-6xl mx-auto px-6 lg:px-8 py-10">
+        <main className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
           <Calculator />
         </main>
       </div>

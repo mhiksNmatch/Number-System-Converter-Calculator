@@ -40,6 +40,11 @@ interface CalculatorState {
 
 const CalculatorContext = createContext<CalculatorState | undefined>(undefined);
 
+const isSupabaseAccessError = (message?: string) => {
+  if (!message) return false;
+  return /row-level security|permission denied|does not exist|not found/i.test(message);
+};
+
 export function CalculatorProvider({ children }: { children: React.ReactNode }) {
   const [inputs, setInputs] = useState<InputRow[]>([
     { id: '1', base: 2, value: '' },
@@ -70,7 +75,11 @@ export function CalculatorProvider({ children }: { children: React.ReactNode }) 
           .limit(5);
 
         if (error) {
-          console.warn('Supabase fetch error (ensure the calculations table exists):', error.message);
+          if (isSupabaseAccessError(error.message)) {
+            console.warn('Supabase history unavailable because the table is protected by RLS or missing. Falling back to local-only history.', error.message);
+          } else {
+            console.warn('Supabase fetch error:', error.message);
+          }
         } else if (data) {
           setHistory(data as HistoryItem[]);
         }
@@ -109,7 +118,11 @@ export function CalculatorProvider({ children }: { children: React.ReactNode }) 
         }]);
         
       if (error) {
-         console.warn('Failed to insert calculation (ensure the calculations table exists):', error.message);
+        if (isSupabaseAccessError(error.message)) {
+          console.warn('Supabase insert blocked by RLS or missing table. Local history remains available.', error.message);
+        } else {
+          console.warn('Failed to insert calculation:', error.message);
+        }
       }
     } catch (err) {
       console.error('Failed to sync with Supabase:', err);

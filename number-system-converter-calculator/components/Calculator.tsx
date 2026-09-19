@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Minus, X, Divide, Trash2, ArrowRight, Clock, Copy, Check } from 'lucide-react';
 import { Base, isValidNumber, toDecimal, fromDecimal } from '@/lib/converter';
 import { useCalculatorContext, Operation, InputRow, HistoryItem } from './CalculatorContext';
+import ComplementInputCard from './ComplementInputCard';
+import ComplementSubtractionPanel from './ComplementSubtractionPanel';
 
 function CopyButton({ text, className = '', dark = false }: { text: string; className?: string; dark?: boolean }) {
   const [copied, setCopied] = useState(false);
@@ -169,16 +171,21 @@ export default function Calculator() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-8">
-      {/* Top Section: Inputs and Operations */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        {/* Left Column: Inputs */}
-        <div className="lg:col-span-7 space-y-6 bg-[#FCFAF2] p-6 md:p-8 rounded-2xl shadow-sm border border-[#D6D3C1]">
-          <div>
-            <h2 className="text-2xl font-serif font-bold text-[#5A5A40] mb-1">Numbers to Calculate</h2>
-            <p className="text-[#8E917A] text-sm uppercase tracking-widest font-medium mb-6">Enter at least 3 numbers and specify their bases.</p>
-          </div>
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+      {/* Calculation setup */}
+      <div className="rounded-xl border border-[#D6D3C1] bg-[#FCFAF2] p-5 shadow-sm md:p-7">
+        <div className="mb-6 border-b border-[#D6D3C1] pb-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8E917A]">Calculation setup</p>
+          <h2 className="mt-1 font-serif text-2xl font-bold text-[#5A5A40]">Numbers and operation</h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          {/* Number inputs */}
+          <div className="space-y-6 lg:col-span-7">
+            <div>
+              <h3 className="mb-1 text-lg font-serif font-bold text-[#5A5A40]">Numbers to Calculate</h3>
+              <p className="mb-6 text-sm text-[#8E917A]">Enter at least 3 numbers and specify their bases.</p>
+            </div>
 
           <div className="space-y-4">
             <AnimatePresence initial={false}>
@@ -189,15 +196,15 @@ export default function Calculator() {
                   animate={{ opacity: 1, height: 'auto', scale: 1 }}
                   exit={{ opacity: 0, height: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="bg-[#FCFAF2] rounded-2xl border border-[#D6D3C1] p-5 shadow-sm flex flex-col relative group focus-within:border-[#5A5A40] focus-within:ring-1 focus-within:ring-[#5A5A40]"
+                  className="group relative flex flex-col rounded-xl border border-[#D6D3C1] bg-[#FCFAF2] p-4 shadow-sm focus-within:border-[#5A5A40] focus-within:ring-2 focus-within:ring-[#E8E6D8]"
                 >
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-xs uppercase font-bold tracking-tighter text-[#8E917A]">Number Input {String(index + 1).padStart(2, '0')}</span>
+                    <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#8E917A]">Number Input {String(index + 1).padStart(2, '0')}</span>
                     <div className="flex items-center gap-2">
                       <select
                         value={input.base}
                         onChange={(e) => handleInputChange(input.id, 'base', Number(e.target.value))}
-                        className="bg-[#F2F1EB] text-[10px] px-2 py-0.5 rounded border border-[#D6D3C1] font-bold uppercase text-[#5A5A40] outline-none focus:ring-1 focus:ring-[#5A5A40]"
+                        className="h-8 rounded-lg border border-[#D6D3C1] bg-[#F2F1EB] px-2 text-[10px] font-bold uppercase text-[#5A5A40] outline-none focus:border-[#5A5A40] focus:ring-2 focus:ring-[#E8E6D8]"
                       >
                         <option value={2}>Binary</option>
                         <option value={8}>Octal</option>
@@ -225,10 +232,10 @@ export default function Calculator() {
                       value={input.value}
                       onChange={(e) => handleInputChange(input.id, 'value', e.target.value)}
                       placeholder={`0`}
-                      className={`bg-transparent text-3xl font-mono focus:outline-none mb-1 w-full border-b border-dashed pb-2 transition-all ${
+                      className={`w-full border-b border-dashed bg-transparent pb-2 font-mono text-3xl focus:outline-none ${
                         input.error 
                           ? 'border-red-400 text-red-600' 
-                          : 'border-[#D6D3C1] text-[#5A5A40] focus:border-[#5A5A40]'
+                            : 'border-[#D6D3C1] text-[#5A5A40] focus:border-[#5A5A40]'
                       }`}
                     />
                     {input.error && (
@@ -244,27 +251,27 @@ export default function Calculator() {
 
           <button
             onClick={addInput}
-            className="flex items-center gap-2 text-sm font-bold text-[#8E917A] hover:text-[#5A5A40] bg-[#F2F1EB] hover:bg-[#E8E6D8] px-4 py-2 rounded-lg transition-colors mt-4 border border-[#D6D3C1]"
+            className="mt-4 flex items-center gap-2 rounded-lg border border-[#D6D3C1] bg-[#F2F1EB] px-4 py-2.5 text-sm font-bold text-[#8E917A] transition-colors hover:border-[#5A5A40] hover:bg-[#E8E6D8] hover:text-[#5A5A40]"
           >
             <Plus className="w-4 h-4" />
             Add Input
           </button>
-        </div>
 
-        {/* Right Column: Operation & Calculate Action */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="bg-[#FCFAF2] p-6 md:p-8 rounded-2xl shadow-sm border border-[#D6D3C1]">
-            <h2 className="text-xl font-serif font-bold text-[#5A5A40] mb-6">Arithmetic Operation</h2>
+          </div>
+
+          {/* Operation controls */}
+          <div className="rounded-xl border border-[#D6D3C1] bg-white p-5 lg:col-span-5">
+            <h3 className="mb-5 font-serif text-xl font-bold text-[#5A5A40]">Arithmetic Operation</h3>
             
             <div className="grid grid-cols-2 gap-3 mb-8">
               {(['+', '-', '*', '/'] as Operation[]).map((op) => (
                 <button
                   key={op}
                   onClick={() => { setOperation(op); setResults(null); }}
-                  className={`flex items-center justify-center gap-3 py-3 rounded-xl border transition-all ${
+                    className={`flex min-h-12 items-center justify-center gap-3 rounded-lg border px-3 py-3 transition-all ${
                     operation === op
-                      ? 'border-[#5A5A40] bg-[#5A5A40] text-white font-bold shadow-sm'
-                      : 'border-[#D6D3C1] bg-white text-[#8E917A] hover:border-[#8E917A] font-medium'
+                      ? 'border-[#5A5A40] bg-[#5A5A40] font-bold text-white shadow-sm'
+                      : 'border-[#D6D3C1] bg-white font-medium text-[#8E917A] hover:border-[#8E917A] hover:text-[#5A5A40]'
                   }`}
                 >
                   <span className="text-xl font-mono font-bold">
@@ -277,13 +284,104 @@ export default function Calculator() {
 
             <button
               onClick={calculate}
-              className="w-full flex items-center justify-center gap-2 py-4 bg-[#5A5A40] hover:bg-[#43413B] text-white rounded-xl font-bold uppercase tracking-widest text-sm transition-all shadow-sm active:scale-[0.98]"
+              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#5A5A40] py-3.5 text-sm font-bold uppercase tracking-[0.14em] text-white shadow-sm transition-all hover:bg-[#43413B] active:scale-[0.98]"
             >
               Calculate Results
               <ArrowRight className="w-5 h-5" />
             </button>
+
+            {history.length > 0 && (
+              <div className="mt-8 border-t border-[#D6D3C1] pt-6">
+                <div className="mb-4 flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-[#8E917A]" />
+                  <h4 className="font-serif text-lg font-bold text-[#5A5A40]">Recent Calculations</h4>
+                </div>
+
+                <div className="space-y-3">
+                  {history.map((item) => (
+                    <div key={item.id} className="flex flex-col gap-3 rounded-lg border border-[#D6D3C1] bg-[#FCFAF2] p-3 hover:border-[#8E917A] md:flex-row md:items-center md:justify-between">
+                      <div className="overflow-x-auto whitespace-nowrap font-mono text-xs text-[#43413B] scrollbar-hide">
+                        {item.expression.split('=').map((part, i) => (
+                          i === 0 ? (
+                            <span key={i}>{formatExpressionValue(part)}</span>
+                          ) : (
+                            <span key={i} className="font-bold text-[#5A5A40]">{' = '}{part.trim()}</span>
+                          )
+                        ))}
+                      </div>
+                      <div className="flex shrink-0 items-center justify-between gap-3 md:justify-end">
+                        <div className="flex flex-col items-end">
+                          <span className="text-[9px] font-bold uppercase text-[#8E917A]">Hex</span>
+                          <span className="font-mono text-xs uppercase text-[#5A5A40]">{fromDecimal(item.finalValue, 16)}</span>
+                        </div>
+                        <div className="flex flex-col items-end">
+                          <span className="text-[9px] font-bold uppercase text-[#8E917A]">Binary</span>
+                          <span className="font-mono text-xs text-[#5A5A40]">{fromDecimal(item.finalValue, 2)}</span>
+                        </div>
+                        <div className="h-7 w-px bg-[#D6D3C1]" />
+                        <div className="flex flex-col items-end">
+                          <span className="text-[9px] font-bold uppercase text-[#5A5A40]">Decimal</span>
+                          <span className="font-mono text-base font-bold leading-none text-[#5A5A40]">{item.finalValue}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
+      </div>
+
+      {/* Arithmetic expression */}
+      <AnimatePresence>
+        {results && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="order-2 rounded-xl border border-[#D6D3C1] bg-[#E8E6D8] p-5 shadow-sm md:p-7"
+          >
+            <div className="rounded-lg border border-[#D6D3C1] bg-[#FCFAF2] px-5 py-5 text-center shadow-sm md:px-8">
+              <span className="mb-2 block text-[10px] font-bold uppercase tracking-widest text-[#8E917A]">Arithmetic Expression</span>
+              <div className="overflow-x-auto whitespace-nowrap pb-1 font-mono text-xl tracking-wide text-[#43413B] md:text-2xl">
+                {results.expression.split('=').map((part: string, i: number) => (
+                  i === 0 ? (
+                    <span key={i}>{formatExpressionValue(part)}</span>
+                  ) : (
+                    <span key={i} className="font-bold text-[#5A5A40]">{' = '}{part.trim()}</span>
+                  )
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Values */}
+      <div className="order-3 rounded-xl border border-[#D6D3C1] bg-[#FCFAF2] p-5 shadow-sm md:p-7">
+        <div className="mb-5 flex items-end justify-between gap-4 border-b border-[#D6D3C1] pb-4">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8E917A]">Values</p>
+            <h2 className="mt-1 font-serif text-2xl font-bold text-[#5A5A40]">Complement values</h2>
+          </div>
+          <span className="hidden text-xs text-[#8E917A] sm:block">Calculated from each input base</span>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {inputs.map((input, index) => (
+            <ComplementInputCard
+              key={input.id}
+              label={`Value ${index + 1}`}
+              base={input.base}
+              value={input.value}
+              digits={Math.max(1, input.value.replace(/^-/, '').length || 1)}
+              onChange={(nextValue) => handleInputChange(input.id, 'value', nextValue)}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="order-4 mt-8">
+        <ComplementSubtractionPanel inputs={inputs} />
       </div>
 
       {/* Bottom Section: Results */}
@@ -292,26 +390,10 @@ export default function Calculator() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#E8E6D8] p-6 md:p-8 rounded-2xl shadow-inner border border-[#D6D3C1] overflow-hidden"
+            className="order-2 -mt-8 overflow-hidden rounded-xl border border-t-0 border-[#D6D3C1] bg-[#E8E6D8] p-6 shadow-inner md:p-8"
           >
             <div className="flex flex-col gap-8">
               
-              {/* Expression */}
-              <div className="text-center bg-[#FCFAF2] px-8 py-6 rounded-xl border border-[#D6D3C1] shadow-sm">
-                <span className="text-[10px] uppercase font-bold text-[#8E917A] block mb-2 tracking-widest">Arithmetic Expression</span>
-                <div className="font-mono text-xl md:text-2xl text-[#43413B] tracking-wide overflow-x-auto whitespace-nowrap pb-2">
-                  {results.expression.split('=').map((part: string, i: number) => (
-                    i === 0 ? (
-                      <span key={i}>{formatExpressionValue(part)}</span>
-                    ) : (
-                      <span key={i} className="font-bold text-[#5A5A40]">
-                        {' = '}{part.trim()}
-                      </span>
-                    )
-                  ))}
-                </div>
-              </div>
-
               {/* Final Result Grid */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
@@ -382,49 +464,6 @@ export default function Calculator() {
         )}
       </AnimatePresence>
 
-      {/* History Section */}
-      {history.length > 0 && (
-        <div className="bg-[#FCFAF2] p-6 md:p-8 rounded-2xl shadow-sm border border-[#D6D3C1] mt-8">
-          <div className="flex items-center gap-2 mb-6">
-            <Clock className="w-5 h-5 text-[#8E917A]" />
-            <h2 className="text-xl font-serif font-bold text-[#5A5A40]">Recent Calculations</h2>
-          </div>
-          
-          <div className="space-y-3">
-            {history.map((item) => (
-              <div key={item.id} className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-white border border-[#D6D3C1] rounded-xl gap-4 hover:border-[#8E917A] transition-colors">
-                <div className="font-mono text-sm text-[#43413B] overflow-x-auto whitespace-nowrap scrollbar-hide">
-                  {item.expression.split('=').map((part, i) => (
-                    i === 0 ? (
-                      <span key={i}>{formatExpressionValue(part)}</span>
-                    ) : (
-                      <span key={i} className="font-bold text-[#5A5A40]">
-                        {' = '}{part.trim()}
-                      </span>
-                    )
-                  ))}
-                </div>
-                
-                <div className="flex items-center gap-3 shrink-0">
-                  <div className="flex flex-col items-end">
-                    <span className="text-[10px] uppercase font-bold text-[#8E917A]">Hex</span>
-                    <span className="font-mono text-xs text-[#5A5A40] uppercase">{fromDecimal(item.finalValue, 16)}</span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-[10px] uppercase font-bold text-[#8E917A]">Binary</span>
-                    <span className="font-mono text-xs text-[#5A5A40]">{fromDecimal(item.finalValue, 2)}</span>
-                  </div>
-                  <div className="h-8 w-px bg-[#D6D3C1] mx-1"></div>
-                  <div className="flex flex-col items-end min-w-[80px]">
-                    <span className="text-[10px] uppercase font-bold text-[#5A5A40]">Decimal</span>
-                    <span className="font-mono text-lg font-bold text-[#5A5A40] leading-none">{item.finalValue}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
