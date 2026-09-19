@@ -175,17 +175,13 @@ export default function Calculator() {
       {/* Calculation setup */}
       <div className="rounded-xl border border-[#D6D3C1] bg-[#FCFAF2] p-5 shadow-sm md:p-7">
         <div className="mb-6 border-b border-[#D6D3C1] pb-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8E917A]">Calculation setup</p>
           <h2 className="mt-1 font-serif text-2xl font-bold text-[#5A5A40]">Numbers and operation</h2>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8E917A]">Enter at least 3 numbers and specify their bases.</p>
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Number inputs */}
           <div className="space-y-6 lg:col-span-7">
-            <div>
-              <h3 className="mb-1 text-lg font-serif font-bold text-[#5A5A40]">Numbers to Calculate</h3>
-              <p className="mb-6 text-sm text-[#8E917A]">Enter at least 3 numbers and specify their bases.</p>
-            </div>
 
           <div className="space-y-4">
             <AnimatePresence initial={false}>
