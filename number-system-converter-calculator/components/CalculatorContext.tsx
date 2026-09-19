@@ -1,8 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Base } from '@/lib/converter';
-import { createClient } from '@/utils/supabase/client';
 
 export type Operation = '+' | '-' | '*' | '/';
 
@@ -56,34 +55,6 @@ export function CalculatorProvider({ children }: { children: React.ReactNode }) 
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 
-  // Stable Supabase client instance for client-side usage
-  const [supabase] = useState(() => createClient());
-
-  // Load history from Supabase on mount
-  useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('calculations')
-          .select('*')
-          .order('timestamp', { ascending: false })
-          .limit(5);
-
-        if (error) {
-          console.warn('Supabase fetch error (ensure the calculations table exists):', error.message);
-        } else if (data) {
-          setHistory(data as HistoryItem[]);
-        }
-      } catch (err) {
-        console.error('Failed to load history:', err);
-      } finally {
-        setIsLoadingHistory(false);
-      }
-    };
-    
-    fetchHistory();
-  }, [supabase]);
-
   const addCalculationToHistory = useCallback(async (newResult: any, op: Operation) => {
     const newItem: HistoryItem = {
       ...newResult,
@@ -92,29 +63,9 @@ export function CalculatorProvider({ children }: { children: React.ReactNode }) 
       operation: op
     };
 
-    // Optimistic UI update
     setHistory(prev => [newItem, ...prev].slice(0, 5));
-
-    // Save to Supabase
-    try {
-      const { error } = await supabase
-        .from('calculations')
-        .insert([{
-          id: newItem.id,
-          timestamp: newItem.timestamp,
-          operation: newItem.operation,
-          originalValues: newItem.originalValues,
-          finalValue: newItem.finalValue,
-          expression: newItem.expression
-        }]);
-        
-      if (error) {
-         console.warn('Failed to insert calculation (ensure the calculations table exists):', error.message);
-      }
-    } catch (err) {
-      console.error('Failed to sync with Supabase:', err);
-    }
-  }, [supabase]);
+    setIsLoadingHistory(false);
+  }, []);
 
   return (
     <CalculatorContext.Provider value={{

@@ -130,7 +130,6 @@ export default function Page() {
                     H --> J
                     I --> J
                     F --> J
-                    J --> K[(Save to Supabase Database)]
                 `} />
               </section>
 
