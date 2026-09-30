@@ -7,6 +7,7 @@ import { Base, isValidNumber, toDecimal, fromDecimal } from '@/lib/converter';
 import { useCalculatorContext, Operation, InputRow, HistoryItem } from './CalculatorContext';
 import ComplementInputCard from './ComplementInputCard';
 import ComplementSubtractionPanel from './ComplementSubtractionPanel';
+import BCDArithmeticPanel from './BCDArithmeticPanel';
 
 function CopyButton({ text, className = '', dark = false }: { text: string; className?: string; dark?: boolean }) {
   const [copied, setCopied] = useState(false);
@@ -378,6 +379,10 @@ export default function Calculator() {
 
       <div className="order-4 mt-8">
         <ComplementSubtractionPanel inputs={inputs} />
+      </div>
+
+      <div className="order-5 mt-8">
+        <BCDArithmeticPanel />
       </div>
 
       {/* Bottom Section: Results */}
